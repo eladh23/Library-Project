@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Book Details{% endblock %}
+
+{% block content %}
+    {% if book %}
+        <h1>Book Details</h1>
+        <p><strong>Book Name:</strong> {{ book.name }}</p><br>
+        <p><strong>Author:</strong> {{ book.author }}</p><br>
+        <p><strong>Year Publish:</strong> {{ book.year_published }}</p><br>
+        <p><strong></strong> {{ book.image }}</p><br>
+    {% else %}
+        <p>Book not found.</p>
+    {% endif %}
+{% endblock %}

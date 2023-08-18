@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}All Books{% endblock %}
+
+{% block content %}
+<h1>All Books</h1>
+{% if books %}
+<ul class="list-group">
+    {% for book in books %}
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-md-2">
+                {% if book.image %}
+                <a href="{% url 'single_book' book.id %}">
+                    <img src="{% static 'book_image/' %}{{ book.image }}" alt="{{ book.name }}" width="100%">
+                </a>
+                {% else %}
+                <p>No Image Available</p>
+                {% endif %}
+            </div>
+
+
+            <div class="col-md-10">
+                {{ book.name }} - {{ book.author }} - {{ book.year_published }} <br>
+                <form method="post" action="{% url 'loan_book' book.id %}">
+                    {% csrf_token %}
+                    <select name="loan_type">
+                        <option value="1">Up to 10 days</option>
+                        <option value="2">Up to 5 days</option>
+                        <option value="3">Up to 2 days</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-primary">Loan</button>
+                    {% if user.is_superuser %}
+                    <a href="{% url 'remove_book' book.id %}" class="btn btn-sm btn-danger">Remove</a>
+                    <a href="{% url 'update_book' book.id %}" class="btn btn-sm btn-success">Update</a>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No Books in the Library</p>
+{% endif %}
+{% endblock %}

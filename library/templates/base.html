@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>{% block title %}Library{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    footer {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #555;
+      color: white;
+      padding: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">My-Library</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="{% url 'all_books' %}">Home</a></li>
+          <li><a href="{% url 'my_loans' %}">My Loans</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+          {% if user.is_superuser %}
+            <ul class="nav navbar-nav">
+              <li><a href="{% url 'add_book' %}">Add Book</a></li>
+            </ul>
+          {% endif %}
+          
+        </ul>
+        
+        <form class="navbar-form navbar-right" role="search" action="{% url 'search_book' %}" method="get">
+          <div class="form-group input-group">
+            <input type="text" name="query" class="form-control" placeholder="Search..">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+          </div>
+        </form>
+        
+        <ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %}
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Hello, {{ user.username }}</a></li>
+            <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+          {% else %}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> My Account <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+              </ul>
+            </li>
+          {% endif %}
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+
+  <div class="container text-center">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  <footer class="container-fluid text-center">
+    <p>&copy; {{ current_year }} My Library. All rights reserved.</p>
+  </footer>
+</body>
+
+</html>

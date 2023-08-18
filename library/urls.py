@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.urls import path
 from library import views
 from library.views import custom_404

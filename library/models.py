@@ -15,7 +15,7 @@ class Books(models.Model):
     name = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
     year_published = models.PositiveIntegerField()
-    image = models.ImageField(upload_to='all_books/', null=True, blank=True)
+    image = models.ImageField(upload_to="books_images", default="/books_images/books.png")
     borrowers = models.ManyToManyField(CustomerUser, through='Loan')
 
 class Loan(models.Model):

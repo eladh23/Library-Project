@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Book Details{% endblock %}
 
 {% block content %}
@@ -8,7 +8,14 @@
         <p><strong>Book Name:</strong> {{ book.name }}</p><br>
         <p><strong>Author:</strong> {{ book.author }}</p><br>
         <p><strong>Year Publish:</strong> {{ book.year_published }}</p><br>
-        <p><strong></strong> {{ book.image }}</p><br>
+        {% if book.image %}
+            <div class="mt-4">
+                <strong>Image:</strong><br>
+                <img src="{% static book.image %}" alt="{{ book.name }}" class="bd-placeholder-img card-img-top" width="100%" height="200">
+            </div>
+        {% else %}
+            <p>No Image Available</p>
+        {% endif %}
     {% else %}
         <p>Book not found.</p>
     {% endif %}

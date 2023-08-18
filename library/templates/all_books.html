@@ -12,8 +12,8 @@
             <div class="col-md-2">
                 {% if book.image %}
                 <a href="{% url 'single_book' book.id %}">
-                    <img src="{% static 'book_image/' %}{{ book.image }}" alt="{{ book.name }}" width="100%">
-                </a>
+                    <img src="{% static book.image %}" alt="{{ book.name }}" class="bd-placeholder-img card-img-top" width="100%" height="225">
+                </a><br>
                 {% else %}
                 <p>No Image Available</p>
                 {% endif %}
@@ -21,18 +21,20 @@
 
 
             <div class="col-md-10">
-                {{ book.name }} - {{ book.author }} - {{ book.year_published }} <br>
+                Book Name: {{ book.name }}<br> 
+                Author: {{ book.author }}<br> 
+                Year Published: {{ book.year_published }}<br>
                 <form method="post" action="{% url 'loan_book' book.id %}">
                     {% csrf_token %}
                     <select name="loan_type">
-                        <option value="1">Up to 10 days</option>
-                        <option value="2">Up to 5 days</option>
-                        <option value="3">Up to 2 days</option>
+                        <option value="1">Loan to 10 days</option>
+                        <option value="2">Loan to 5 days</option>
+                        <option value="3">Loan to 2 days</option>
                     </select>
-                    <button type="submit" class="btn btn-sm btn-primary">Loan</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Loan</button><br>
                     {% if user.is_superuser %}
-                    <a href="{% url 'remove_book' book.id %}" class="btn btn-sm btn-danger">Remove</a>
-                    <a href="{% url 'update_book' book.id %}" class="btn btn-sm btn-success">Update</a>
+                    <a href="{% url 'remove_book' book.id %}" class="btn btn-sm btn-danger">Remove</a><br>
+                    <a href="{% url 'update_book' book.id %}" class="btn btn-sm btn-success">Update</a><br>
                     {% endif %}
                 </form>
             </div>

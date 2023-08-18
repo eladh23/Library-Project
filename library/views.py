@@ -4,8 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, render, redirect
-from datetime import datetime, timedelta, timezone
-
+from datetime import datetime, timedelta
 
 
 def all_books(request):
@@ -23,6 +22,18 @@ def single_book(request, book_id):
         book = None
     context = {'book': book}
     return render(request, 'single_book.html', context)
+
+
+def search_book(request):
+    query = request.GET.get('query')
+    if query:
+        books = Books.objects.filter(name__icontains=query)
+    else:
+        books = []
+
+    context = {'books': books, 'query': query}
+    return render(request, 'search_book.html', context)
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -64,19 +75,6 @@ def user_register(request):
         return redirect('login')
 
     return render(request, 'register.html')
-
-def search_book(request):
-    query = request.GET.get('query')
-    if query:
-        books = Books.objects.filter(name__icontains=query)
-    else:
-        books = []
-
-    context = {'books': books, 'query': query}
-    return render(request, 'search_book.html', context)
-
-
-
 
 
 def my_loans(request):

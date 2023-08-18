@@ -3,37 +3,47 @@
 {% block title %}My Loans{% endblock %}
 
 {% block content %}
-    <h1>My Loans</h1>
-    {% if user.is_authenticated %}
-        {% if loans %}
-            <div class="row">
-                {% for loan in loans %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            {% if loan.book.image %}
-                                <img src="{{ loan.book.image.url }}" class="card-img-top" alt="{{ loan.book.name }}">
-                            {% else %}
-                                <div class="no-image-placeholder">
-                                    <p>No Image Available</p>
-                                </div>
-                            {% endif %}
-                            <div class="card-body">
-                                <h5 class="card-title">{{ loan.book.name }}</h5>
-                                <p class="card-text">{{ loan.loan_date }}</p>
-                                {% if loan.days_left is not None %}
-                                    <p class="card-text">Return by: {{ loan.return_date }} ({{ loan.days_left }} days left)</p>
-                                {% else %}
-                                    <p class="card-text">Return date not set</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+<h1>My Loans</h1>
+{% if user.is_authenticated %}
+{% if loans %}
+<div class="row">
+    {% for loan in loans %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            {% if loan.book.image %}
+            <img src="{{ loan.book.image.url }}" class="card-img-top" alt="{{ loan.book.name }}">
+            {% else %}
+            <div class="no-image-placeholder">
+                <p>No Image Available</p>
             </div>
-        {% else %} 
-            <p>You have no active loans.</p>
-        {% endif %}
-    {% else %}
-        <p>You have to log in first.</p>
-    {% endif %}
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ loan.book.name }}</h5>
+                <p class="card-text">Loan Date: {{ loan.loan_date }}</p>
+                {% if loan.return_date %}
+                <p class="card-text">
+                    Return by: {{ loan.return_date }}
+                    {% if loan.days_left is not None %}
+                    ({{ loan.days_left }} days left)
+                    {% endif %}
+                </p>
+                {% else %}
+                <p class="card-text">Return date not set</p>
+                {% endif %}
+            </div>
+            <form method="post" action="{% url 'return_book' loan.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="loan_id" value="{{ loan.id }}">
+                <button type="submit" class="btn btn-primary">Return Book</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>You have no active loans.</p>
+{% endif %}
+{% else %}
+<p>You have to log in first.</p>
+{% endif %}
 {% endblock %}

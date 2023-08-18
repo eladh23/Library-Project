@@ -4,7 +4,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, render, redirect
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+
 
 def all_books(request):
     all_books = Books.objects.all()
@@ -135,8 +136,6 @@ def loan_book(request, book_id):
 
     return redirect('my_loans')
 
-def custom_404(request, exception):
-    return render(request, '404.html', status=404)
 
 def remove_book(request, book_id):
     book = get_object_or_404(Books, id=book_id)
@@ -154,10 +153,29 @@ def update_book(request, book_id):
         book.name = request.POST.get('name')
         book.author = request.POST.get('author')
         book.year_published = request.POST.get('year_published')
+        book.image = request.POST.get('image')
         book.save()
         return redirect('all_books')
 
     return render(request, 'update_book.html', {'book': book})
+
+
+@login_required(login_url='not_logged_in') 
+def return_book(request, loan_id):
+    if request.method == 'POST':
+        try:
+            loan = Loan.objects.get(id=loan_id)
+            if loan.customer == request.user:
+                loan.delete()
+                return redirect('my_loans')
+
+        except Loan.DoesNotExist:
+            return render(request, 'my_loans.html') 
+
+    return redirect('my_loans')
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
 
 def contact(request):
     return render(request, 'contact.html')

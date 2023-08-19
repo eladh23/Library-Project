@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}My Loans{% endblock %}
 
 {% block content %}
@@ -11,7 +11,7 @@
     <div class="col-md-4 mb-4">
         <div class="card">
             {% if loan.book.image %}
-            <img src="{{ loan.book.image.url }}" class="card-img-top" alt="{{ loan.book.name }}">
+            <img src="{% static loan.book.image %}" class="card-img-top" alt="{{ book.name }}">
             {% else %}
             <div class="no-image-placeholder">
                 <p>No Image Available</p>

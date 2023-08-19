@@ -103,10 +103,15 @@ def add_book(request):
         name = request.POST.get('name')
         author = request.POST.get('author')
         year_published = request.POST.get('year_published')
-        Books.objects.create(name=name, author=author, year_published=year_published)
+        image = request.POST.get('image')
+        print(image)
+        new_book=Books(name=name, author=author, year_published=year_published,image=image)
+        print(new_book)
+        new_book.save()
         return redirect('all_books')
 
     return render(request, 'add_book.html')
+
 
 @login_required(login_url='login')
 def loan_book(request, book_id):

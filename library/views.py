@@ -26,12 +26,13 @@ def single_book(request, book_id):
 
 def search_book(request):
     query = request.GET.get('query')
+    all_books = Books.objects.all()
     if query:
-        books = Books.objects.filter(name__icontains=query)
+        all_books = all_books.filter(name__icontains=query)
     else:
-        books = []
+        all_books = []
 
-    context = {'books': books, 'query': query}
+    context = {'books': all_books, 'query': query}
     return render(request, 'search_book.html', context)
 
 
@@ -97,20 +98,38 @@ def my_loans(request):
     }
     return render(request, 'my_loans.html', context)
 
+
 @staff_member_required
 def add_book(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         author = request.POST.get('author')
         year_published = request.POST.get('year_published')
-        image = request.POST.get('image')
-        print(image)
-        new_book=Books(name=name, author=author, year_published=year_published,image=image)
+        image = request.FILES.get('image')
+        image = image
+        new_book = Books(name=name, author=author,
+                         year_published=year_published, image=image)
         print(new_book)
         new_book.save()
         return redirect('all_books')
 
     return render(request, 'add_book.html')
+
+
+def update_book(request, book_id):
+    book = get_object_or_404(Books, id=book_id)
+
+    if request.method == 'POST':
+
+        book.name = request.POST.get('name')
+        book.author = request.POST.get('author')
+        book.year_published = request.POST.get('year_published')
+        img = request.FILES.get('image')
+        book.image = img
+        book.save()
+        return redirect('all_books')
+
+    return render(request, 'update_book.html', {'book': book})
 
 
 @login_required(login_url='login')
@@ -144,28 +163,14 @@ def loan_book(request, book_id):
 
 def remove_book(request, book_id):
     book = get_object_or_404(Books, id=book_id)
-    
+
     if request.user.is_superuser:
         book.delete()
-    
+
     return redirect('all_books')
 
-def update_book(request, book_id):
-    book = get_object_or_404(Books, id=book_id)
 
-    if request.method == 'POST':
-    
-        book.name = request.POST.get('name')
-        book.author = request.POST.get('author')
-        book.year_published = request.POST.get('year_published')
-        book.image = request.POST.get('image')
-        book.save()
-        return redirect('all_books')
-
-    return render(request, 'update_book.html', {'book': book})
-
-
-@login_required(login_url='not_logged_in') 
+@login_required(login_url='not_logged_in')
 def return_book(request, loan_id):
     if request.method == 'POST':
         try:
@@ -175,12 +180,14 @@ def return_book(request, loan_id):
                 return redirect('my_loans')
 
         except Loan.DoesNotExist:
-            return render(request, 'my_loans.html') 
+            return render(request, 'my_loans.html')
 
     return redirect('my_loans')
 
+
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
+
 
 def contact(request):
     return render(request, 'contact.html')

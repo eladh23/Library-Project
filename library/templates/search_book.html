@@ -10,8 +10,8 @@
             {% for book in books %}
                 <li class="list-group-item">{{ book.name }} - {{ book.author }} - {{ book.year_published}}
                 {% if book.image %}
-                        <strong></strong><br>
-                        <img src="{{ book.image.url }}" alt="{{ book.name }}" class="img-fluid">
+                        <br>
+                        <img src="{% static book.image %}" alt="{{ book.name }}" class="img-fluid">
                 {% else %}
                     <p>No Image Available</p>
                 {% endif %}

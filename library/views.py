@@ -125,8 +125,14 @@ def update_book(request, book_id):
         book.author = request.POST.get('author')
         book.year_published = request.POST.get('year_published')
         img = request.FILES.get('image')
-        book.image = img
+        if img:
+            book.image = img
+        else:
+           
+            book.image = 'dow1.jpg'  # default image 
+        
         book.save()
+        
         return redirect('all_books')
     
 

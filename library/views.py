@@ -128,6 +128,7 @@ def update_book(request, book_id):
         book.image = img
         book.save()
         return redirect('all_books')
+    
 
     return render(request, 'update_book.html', {'book': book})
 

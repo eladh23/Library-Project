@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-xomksb+tn*%yfgtwqww9)49(9--$@%y!(s!96j#u5#)$4_v(y8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django-library-if60.onrender.com' ]
 
 AUTH_USER_MODEL = 'library.CustomerUser'
 

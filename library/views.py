@@ -127,9 +127,9 @@ def update_book(request, book_id):
         img = request.FILES.get('image')
         if img:
             book.image = img
-        else:
-           
-            book.image = 'dow1.jpg'  # default image 
+        
+        # If no new image was provided, the existing image remains unchanged
+        
         
         book.save()
         

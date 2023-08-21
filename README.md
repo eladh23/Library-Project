@@ -38,7 +38,7 @@ git clone https://github.com/eladh23/Library-Project
 cd my-library
 
 3. **Create a Virtual Environment:**
-python3 -m venv venv
+python -m venv venv
 
 4. **Activate the Virtual Environment:**
 - On macOS and Linux:
@@ -62,7 +62,8 @@ python manage.py createsuperuser
 python manage.py runserver
 
 9. **Access the Application:**
-Open a web browser and go to `http://127.0.0.1:8000` to access the My Library application.
+Open a web browser and go to `http://127.0.0.1:8000` (with using : `python manage.py runserver`)
+to access the My Library application.
 
 10. **Log in with Admin Credentials:**
  - Username: `admin`

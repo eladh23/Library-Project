@@ -20,7 +20,7 @@ This is a Django-based web application for managing a library's books collection
 
 1. Visit the https://django-library-if60.onrender.com to access the web application.
 2. Log in using your registered user credentials:
-    - **User Credentials:** Username: 'elad_admin' | Password: 123
+    - **User Credentials:** Username: elad_admin | Password: 123
     - **Admin Credentials:** Username: elad_user | Password: 12345
 
 3. Browse the collection of books, borrow loans , and view your loans.
